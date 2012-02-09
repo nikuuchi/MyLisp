@@ -15,15 +15,15 @@ private:
   bool isInt(char c);
   string lexInt();
   int stoi(string s);
-public:
-  Lisp(char *file);
-  virtual ~Lisp();
-  void lmain();
   int eval();
   int plus();
   int mul();
   int sub();
   int div();
+public:
+  Lisp(char *file);
+  virtual ~Lisp();
+  void lmain();
 };
 
 Lisp::~Lisp(){}
