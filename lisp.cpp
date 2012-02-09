@@ -114,6 +114,7 @@ int Lisp::eval(){
   }else if(isInt(buf[index])){
     return stoi(lexInt());
   }else{
+    cout << "Error" << endl;
     return 0;
   }
 }
@@ -124,7 +125,7 @@ void Lisp::lmain(){
     index = 0;
     if(buf[index] == '('){
       ++index;
-      eval();
+      cout << eval() << endl;
     }else{
       cout << "Error" << endl;
     }
