@@ -12,6 +12,7 @@ private:
   ifstream fin;
   string buf;
   int index;
+  int depth;
   bool isInt(char c);
   string lexInt();
   int stoi(string s);
@@ -31,6 +32,7 @@ Lisp::~Lisp(){}
 Lisp::Lisp(char *file){
   fin.open(file);
   index = 0;
+  depth = 0;
 }
 
 bool Lisp::isInt(char c){
@@ -63,55 +65,90 @@ string Lisp::lexInt(){
 
 
 int Lisp::plus(){
-  int a = eval();
-  int b = eval();
-  std::cout << "(+ " << a << " "<<b<<") => " << a+b << std::endl;
+  int a = 0;
+  int d = depth - 1;
+  while(d != depth){
+    int tmp = eval();
+    if(d == depth)
+      break;
+    a += tmp;
+  }
+  std::cout << "(+) => " << a << std::endl;
 
-  return a+b;
+  return a;
 }
 
 int Lisp::mul(){
-  int a = eval();
-  int b = eval();
-  std::cout << "(* " << a << " "<<b<<") => " << a*b << std::endl;
+  int a = 1;
+  int d = depth - 1;
+  while(d != depth){
+    int tmp = eval();
+    if(d == depth)
+      break;
+    a *= tmp;
+  }
+  std::cout << "(*) => " << a << std::endl;
 
-  return a*b;
+  return a;
 }
 
 int Lisp::div(){
   int a = eval();
-  int b = eval();
-  std::cout << "(/ " << a << " "<<b<<") => " << a/b << std::endl;
+  int d = depth - 1;
+  while(d != depth){
+    int tmp = eval();
+    if(d == depth)
+      break;
+    a /= tmp;
+  }
+  std::cout << "(/) => " << a << std::endl;
 
-  return a/b;
+  return a;
 }
 
 int Lisp::sub(){
   int a = eval();
-  int b = eval();
-  std::cout << "(- " << a << " "<<b<<") => " << a-b << std::endl;
+  int d = depth - 1;
+  while(d != depth){
+    int tmp = eval();
+    if(d == depth)
+      break;
+    a -= tmp;
+  }
+  std::cout << "(-) => " << a << std::endl;
 
-  return a-b;
+  return a;
 }
 
-
 int Lisp::eval(){
-  if(buf[index] == ' ' || buf[index] == '(' || buf[index] == ')'){
+  switch(buf[index]){
+  case '(':
+    ++depth;
+  case ' ':
+  case '\t':
     ++index;
     return eval();
-  }else if(buf[index] == '+'){
+  case ')':
+    --depth;
+    ++index;
+    return 0; //eval()を続けないという意味であり、0に意味があるわけではない。
+  case '+':
     ++index;
     return plus();
-  }else if(buf[index] == '-'){
+  case '-':
     ++index;
     return sub();
-  }else if(buf[index] == '*'){
+  case '*':
     ++index;
     return mul();
-  }else if(buf[index] == '/'){
+  case '/':
     ++index;
     return div();
-  }else if(isInt(buf[index])){
+  default:
+    break;
+  }
+
+  if(isInt(buf[index])){
     return stoi(lexInt());
   }else{
     cout << "Error" << endl;
@@ -121,15 +158,12 @@ int Lisp::eval(){
 
 
 void Lisp::lmain(){
-  while(fin && getline(fin,buf)){
-    index = 0;
-    if(buf[index] == '('){
-      ++index;
-      cout << eval() << endl;
-    }else{
-      cout << "Error" << endl;
-    }
+  string line = "";
+  while(fin && getline(fin,line)){
+    buf += line;
   }
+  index = 0;
+  cout << eval() << endl;
 }
 
 int main(int argc, char **argv){
