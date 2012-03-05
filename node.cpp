@@ -3,7 +3,7 @@
 namespace lisp{
   using namespace std;
   /*
-  virtual Node::Node(){
+  virtualNode::Node(){
 
   }
 
