@@ -7,7 +7,7 @@ SRCS = \
 	lisp.cpp \
 	parser.cpp \
 	node.cpp 
-OBJS = $(SRCS:.cc=.o)
+OBJS = $(SRCS:.cpp=.o)
 PROG = lisp
 
 all: $(PROG)
