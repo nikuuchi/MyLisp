@@ -3,11 +3,12 @@
 namespace lisp{
   using namespace std;
   /*
-  virtualNode::Node(){
+  Node::Node(){
 
   }
-
-  virtual Node::Node(Node *next,TYPE nodetype, VALUE value){
+  */
+  /*
+  Node::Node(Node *next,TYPE nodetype, VALUE value){
     
   }
   */
